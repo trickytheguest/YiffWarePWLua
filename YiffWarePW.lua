@@ -58,7 +58,117 @@ end)
 
 menu.add_feature("Remove CEO Crate Cooldown", "toggle", parentId, function(e)
     if e.on then
+        script.set_global_i(262145+15361, 0)local function SetIntStat(hash, prefix, value, save)
+    save = save or true
+    local hash0, hash1 = hash, hash
+    if prefix then
+        hash0 = 'MP0_' .. hash
+        hash1 = 'MP1_' .. hash
+        hash1 = gameplay.get_hash_key(hash1)
+    end
+    hash0 = gameplay.get_hash_key(hash0)
+    local value0, e = stats.stat_get_int(hash0, -1)
+    if value0 ~= value then
+        stats.stat_set_int(hash0, value, save)
+    end
+    if prefix then
+        local value1, e = stats.stat_get_int(hash1, -1)
+        if value1 ~= value then
+            stats.stat_set_int(hash1, value, save)
+        end
+    end
+end
+
+local parentId = menu.add_feature("生活质量变化", "parent", 0).id
+menu.add_feature("每 30 秒补充一次零食", "toggle", parentId, function(e)
+    local items = {
+        {'NO_BOUGHT_YUM_SNACKS', 30},
+        {'NO_BOUGHT_HEALTH_SNACKS', 15},
+        {'NO_BOUGHT_EPIC_SNACKS', 5},
+        {'NUMBER_OF_ORANGE_BOUGHT', 10},
+        {'NUMBER_OF_BOURGE_BOUGHT', 10},
+        {'NUMBER_OF_CHAMP_BOUGHT', 5},
+        {'CIGARETTES_BOUGHT', 20},
+    }
+
+    while e.on do 
+        for i = 1, #items do
+            SetIntStat(items[i][1], true, items[i][2])
+        end
+        system.wait(30000)
+    end
+end)
+
+menu.add_feature("每 30 秒补充一次护甲", "toggle", parentId, function(e)
+    local items = {
+        {'MP_CHAR_ARMOUR_1_COUNT', 10},
+        {'MP_CHAR_ARMOUR_2_COUNT', 10},
+        {'MP_CHAR_ARMOUR_3_COUNT', 10},
+        {'MP_CHAR_ARMOUR_4_COUNT', 10},
+        {'MP_CHAR_ARMOUR_5_COUNT', 10}
+    }
+
+    while e.on do
+        for i = 1, #items do
+            SetIntStat(items[i][1], true, items[i][2])
+        end
+        system.wait(30000)
+    end
+end)
+
+menu.add_feature("无限降落伞", "toggle", parentId, function(f)
+    while f.on do
+        system.yield(250)
+        if not weapon.has_ped_got_weapon(player.get_player_ped(player.player_id()), gameplay.get_hash_key("gadget_parachute")) then
+            weapon.give_delayed_weapon_to_ped(player.get_player_ped(player.player_id()), gameplay.get_hash_key("gadget_parachute"), 0, false)
+        end
+    end
+end)
+
+menu.add_feature("移除 CEO 板条箱冷却时间", "toggle", parentId, function(e)
+    if e.on then
         script.set_global_i(262145+15361, 0)
+        script.set_global_i(262145+15362, 0)
+    end
+    if not e.on then
+        script.set_global_i(262145+15361, 300000)   --Buy
+        script.set_global_i(262145+15362, 1800000)  --Sell
+    end
+end)
+
+menu.add_feature("移除 CEO 车辆销售冷却时间", "toggle", parentId, function(e)
+    if e.on then
+        script.set_global_i(262145+19477, 0)
+        script.set_global_i(262145+19478, 0)
+        script.set_global_i(262145+19479, 0)
+        script.set_global_i(262145+19480, 0)
+    end
+    if not e.on then
+        script.set_global_i(262145+19477, 1200000)  --1 Vehicle
+        script.set_global_i(262145+19478, 1680000)  --2 Vehicles
+        script.set_global_i(262145+19479, 2340000)  --3 Vehicles
+        script.set_global_i(262145+19480, 2880000)  --4 Vehicles
+    end
+end)
+
+menu.add_feature("删除空运货物冷却时间", "toggle", parentId, function(e)
+    if e.on then
+        script.set_global_i(262145+22522, 0)
+        script.set_global_i(262145+22523, 0)
+        script.set_global_i(262145+22524, 0)
+        script.set_global_i(262145+22525, 0)
+        script.set_global_i(262145+22561, 0)
+    end
+    if not e.on then
+        script.set_global_i(262145+22522, 120000)  --Tobacco, Counterfeit Goods
+        script.set_global_i(262145+22523, 180000)  --Animal Materials, Art, Jewelry
+        script.set_global_i(262145+22524, 240000)  --Narcotics, Chemicals, Medical Supplies
+        script.set_global_i(262145+22525, 60000)   --Additional Time per Player
+        script.set_global_i(262145+22561, 180000)  --Sale
+    end
+end)
+
+
         script.set_global_i(262145+15362, 0)
     end
     if not e.on then
@@ -97,7 +207,117 @@ menu.add_feature("Remove Air Freight Cargo Cooldown", "toggle", parentId, functi
         script.set_global_i(262145+22525, 60000)   --Additional Time per Player
         script.set_global_i(262145+22561, 180000)  --Sale
     end
+end)local function SetIntStat(hash, prefix, value, save)
+    save = save or true
+    local hash0, hash1 = hash, hash
+    if prefix then
+        hash0 = 'MP0_' .. hash
+        hash1 = 'MP1_' .. hash
+        hash1 = gameplay.get_hash_key(hash1)
+    end
+    hash0 = gameplay.get_hash_key(hash0)
+    local value0, e = stats.stat_get_int(hash0, -1)
+    if value0 ~= value then
+        stats.stat_set_int(hash0, value, save)
+    end
+    if prefix then
+        local value1, e = stats.stat_get_int(hash1, -1)
+        if value1 ~= value then
+            stats.stat_set_int(hash1, value, save)
+        end
+    end
+end
+
+local parentId = menu.add_feature("生活质量变化", "parent", 0).id
+menu.add_feature("每 30 秒补充一次零食", "toggle", parentId, function(e)
+    local items = {
+        {'NO_BOUGHT_YUM_SNACKS', 30},
+        {'NO_BOUGHT_HEALTH_SNACKS', 15},
+        {'NO_BOUGHT_EPIC_SNACKS', 5},
+        {'NUMBER_OF_ORANGE_BOUGHT', 10},
+        {'NUMBER_OF_BOURGE_BOUGHT', 10},
+        {'NUMBER_OF_CHAMP_BOUGHT', 5},
+        {'CIGARETTES_BOUGHT', 20},
+    }
+
+    while e.on do 
+        for i = 1, #items do
+            SetIntStat(items[i][1], true, items[i][2])
+        end
+        system.wait(30000)
+    end
 end)
+
+menu.add_feature("每 30 秒补充一次护甲", "toggle", parentId, function(e)
+    local items = {
+        {'MP_CHAR_ARMOUR_1_COUNT', 10},
+        {'MP_CHAR_ARMOUR_2_COUNT', 10},
+        {'MP_CHAR_ARMOUR_3_COUNT', 10},
+        {'MP_CHAR_ARMOUR_4_COUNT', 10},
+        {'MP_CHAR_ARMOUR_5_COUNT', 10}
+    }
+
+    while e.on do
+        for i = 1, #items do
+            SetIntStat(items[i][1], true, items[i][2])
+        end
+        system.wait(30000)
+    end
+end)
+
+menu.add_feature("无限降落伞", "toggle", parentId, function(f)
+    while f.on do
+        system.yield(250)
+        if not weapon.has_ped_got_weapon(player.get_player_ped(player.player_id()), gameplay.get_hash_key("gadget_parachute")) then
+            weapon.give_delayed_weapon_to_ped(player.get_player_ped(player.player_id()), gameplay.get_hash_key("gadget_parachute"), 0, false)
+        end
+    end
+end)
+
+menu.add_feature("移除 CEO 板条箱冷却时间", "toggle", parentId, function(e)
+    if e.on then
+        script.set_global_i(262145+15361, 0)
+        script.set_global_i(262145+15362, 0)
+    end
+    if not e.on then
+        script.set_global_i(262145+15361, 300000)   --Buy
+        script.set_global_i(262145+15362, 1800000)  --Sell
+    end
+end)
+
+menu.add_feature("移除 CEO 车辆销售冷却时间", "toggle", parentId, function(e)
+    if e.on then
+        script.set_global_i(262145+19477, 0)
+        script.set_global_i(262145+19478, 0)
+        script.set_global_i(262145+19479, 0)
+        script.set_global_i(262145+19480, 0)
+    end
+    if not e.on then
+        script.set_global_i(262145+19477, 1200000)  --1 Vehicle
+        script.set_global_i(262145+19478, 1680000)  --2 Vehicles
+        script.set_global_i(262145+19479, 2340000)  --3 Vehicles
+        script.set_global_i(262145+19480, 2880000)  --4 Vehicles
+    end
+end)
+
+menu.add_feature("删除空运货物冷却时间", "toggle", parentId, function(e)
+    if e.on then
+        script.set_global_i(262145+22522, 0)
+        script.set_global_i(262145+22523, 0)
+        script.set_global_i(262145+22524, 0)
+        script.set_global_i(262145+22525, 0)
+        script.set_global_i(262145+22561, 0)
+    end
+    if not e.on then
+        script.set_global_i(262145+22522, 120000)  --Tobacco, Counterfeit Goods
+        script.set_global_i(262145+22523, 180000)  --Animal Materials, Art, Jewelry
+        script.set_global_i(262145+22524, 240000)  --Narcotics, Chemicals, Medical Supplies
+        script.set_global_i(262145+22525, 60000)   --Additional Time per Player
+        script.set_global_i(262145+22561, 180000)  --Sale
+    end
+end)
+
+
 
 menu.add_feature("Remove Terrobyte Mission Cooldown", "toggle", parentId, function(e)
     if e.on then
